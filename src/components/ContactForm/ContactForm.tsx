@@ -12,6 +12,7 @@ interface Props {
 const ContactForm: React.FC<Props> = ({onSubmit}) => {
   const loading = useAppSelector(selectSendLoading);
   const navigate = useNavigate();
+  const imageUrl = 'https://thumbs.dreamstime.com/b/no-user-profile-picture-24185395.jpg';
 
   const [contact, setContact] = useState<SendContact>({
     name: '',
@@ -19,6 +20,8 @@ const ContactForm: React.FC<Props> = ({onSubmit}) => {
     email: '',
     photo: '',
   });
+
+  const userPhoto = contact.photo || imageUrl;
 
   const onContactChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = e.target;
@@ -91,7 +94,8 @@ const ContactForm: React.FC<Props> = ({onSubmit}) => {
               onChange={onContactChange}
             />
           </div>
-          <div className='d-flex align-items-center justify-content-around'>
+          <img src={userPhoto} alt="" style={{width: '150px', height: '150px'}}/>
+          <div className='d-flex align-items-center justify-content-around mt-4'>
             <button
               type='submit'
               className='btn btn-info'
