@@ -8,3 +8,7 @@ export interface SendContact {
 export interface ApiContactList {
   [id: string]: SendContact;
 }
+
+export interface ContactsFromApi extends SendContact {
+  id: string;
+}

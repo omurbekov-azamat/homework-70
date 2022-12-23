@@ -94,6 +94,7 @@ const ContactForm: React.FC<Props> = ({onSubmit}) => {
               onChange={onContactChange}
             />
           </div>
+          <p>Photo preview</p>
           <img src={userPhoto} alt="" style={{width: '150px', height: '150px'}}/>
           <div className='d-flex align-items-center justify-content-around mt-4'>
             <button
