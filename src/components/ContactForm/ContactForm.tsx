@@ -1,10 +1,44 @@
-import React from 'react';
-import {Link} from "react-router-dom";
+import React, {useState} from 'react';
+import {useNavigate} from "react-router-dom";
+import {useAppSelector} from "../../app/hooks";
+import {selectSendLoading} from "../../store/contactSlice";
+import ButtonSpinner from "../Spinner/ButtonSpiner";
+import {SendContact} from "../../types";
 
-const ContactForm = () => {
+interface Props {
+  onSubmit: (contact: SendContact) => void;
+}
+
+const ContactForm: React.FC<Props> = ({onSubmit}) => {
+  const loading = useAppSelector(selectSendLoading);
+  const navigate = useNavigate();
+
+  const [contact, setContact] = useState<SendContact>({
+    name: '',
+    phone: '',
+    email: '',
+    photo: '',
+  });
+
+  const onContactChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const {name, value} = e.target;
+    setContact(prev => ({...prev, [name]: value}));
+  };
+
+  const onFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    onSubmit(contact);
+    setContact({
+      name: '',
+      phone: '',
+      email: '',
+      photo: '',
+    });
+  };
+
   return (
     <div className='container' style={{width: '800px'}}>
-      <form>
+      <form onSubmit={onFormSubmit}>
         <div className='border border-light p-5'>
           <h4 className='mb-3 text-center'>Add new contact</h4>
           <div className='mb-4'>
@@ -16,6 +50,8 @@ const ContactForm = () => {
               type="text"
               className='form-control'
               required
+              value={contact.name}
+              onChange={onContactChange}
             />
           </div>
           <div className='mb-4'>
@@ -27,6 +63,8 @@ const ContactForm = () => {
               type='text'
               className='form-control'
               required
+              value={contact.phone}
+              onChange={onContactChange}
             />
           </div>
           <div className='mb-4'>
@@ -37,6 +75,8 @@ const ContactForm = () => {
               name='email'
               type="email"
               className='form-control'
+              value={contact.email}
+              onChange={onContactChange}
             />
           </div>
           <div className='mb-4'>
@@ -47,11 +87,26 @@ const ContactForm = () => {
               name='photo'
               type="text"
               className='form-control'
+              value={contact.photo}
+              onChange={onContactChange}
             />
           </div>
           <div className='d-flex align-items-center justify-content-around'>
-            <button className='btn btn-info'>Save</button>
-            <Link className='btn btn-success' to='/'>Back to contacts</Link>
+            <button
+              type='submit'
+              className='btn btn-info'
+              disabled={loading}
+            >
+              {loading && <ButtonSpinner/>}
+              Save
+            </button>
+            <button
+              className='btn btn-success'
+              disabled={loading}
+              onClick={() => navigate('/')}
+            >
+              Back to contacts
+            </button>
           </div>
         </div>
       </form>
