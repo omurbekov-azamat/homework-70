@@ -108,6 +108,7 @@ const ContactForm: React.FC<Props> = ({onSubmit}) => {
             <button
               className='btn btn-success'
               disabled={loading}
+              type='button'
               onClick={() => navigate('/')}
             >
               Back to contacts

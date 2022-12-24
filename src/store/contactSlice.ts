@@ -1,4 +1,4 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {RootState} from "../app/store";
 import {createContact, fetchContacts} from "./contactsThunks";
 import {ContactsFromApi} from "../types";
@@ -7,18 +7,36 @@ interface ContactsState {
   items: ContactsFromApi[],
   sendLoading: boolean;
   fetchLoading: boolean;
+  item: ContactsFromApi;
+  showModal: boolean;
 }
 
 const initialState: ContactsState = {
   items: [],
   sendLoading: false,
   fetchLoading: false,
+  item: {
+    name: '',
+    phone: '',
+    email: '',
+    photo: '',
+    id: '',
+  },
+  showModal: false,
 }
 
 const contactSlice = createSlice({
   name: 'contacts',
   initialState,
-  reducers: {},
+  reducers: {
+    showModal: (state, {payload: contact}: PayloadAction<ContactsFromApi>) => {
+      state.item = contact;
+      state.showModal = true;
+    },
+    closeModal: (state) => {
+      state.showModal = false;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(createContact.pending, (state) => {
       state.sendLoading = true;
@@ -38,7 +56,7 @@ const contactSlice = createSlice({
     });
     builder.addCase(fetchContacts.rejected, (state) => {
       state.fetchLoading = false;
-    })
+    });
   },
 });
 
@@ -46,3 +64,6 @@ export const contactsReducer = contactSlice.reducer;
 export const selectSendLoading = (state: RootState) => state.contacts.sendLoading;
 export const selectContacts = (state: RootState) => state.contacts.items;
 export const selectFetchLoading = (state: RootState) => state.contacts.fetchLoading;
+export const {showModal, closeModal} = contactSlice.actions;
+export const selectOneContact = (state: RootState) => state.contacts.item;
+export const selectShowModal = (state: RootState) => state.contacts.showModal;

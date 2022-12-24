@@ -30,4 +30,4 @@ export const fetchContacts = createAsyncThunk<ContactsFromApi[], undefined>(
 
     return newContacts;
   }
-)
+);

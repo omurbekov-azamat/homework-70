@@ -1,10 +1,11 @@
 import React, {useEffect} from 'react';
+import {useLocation} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {selectContacts, selectFetchLoading} from "../../store/contactSlice";
 import {fetchContacts} from "../../store/contactsThunks";
-import {useLocation} from "react-router-dom";
 import Spinner from "../../components/Spinner/Spinner";
 import ContactItem from "../../components/ContactItem/ContactItem";
+import Modal from "../../components/Modal/Modal";
 
 const Contacts = () => {
   const dispatch = useAppDispatch();
@@ -26,6 +27,7 @@ const Contacts = () => {
           item={item}
         />
       ))}
+      <Modal/>
     </div>
   );
 };
