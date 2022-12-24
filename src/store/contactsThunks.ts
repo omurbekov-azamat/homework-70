@@ -2,6 +2,7 @@ import {createAsyncThunk} from "@reduxjs/toolkit";
 import axiosApi from "../axiosApi";
 import {ApiContactList, SendContact} from "../types";
 import {ContactsFromApi} from "../types";
+import {AppDispatch} from "../app/store";
 
 export const createContact = createAsyncThunk<void, SendContact>(
   'contacts/create',
@@ -31,3 +32,11 @@ export const fetchContacts = createAsyncThunk<ContactsFromApi[], undefined>(
     return newContacts;
   }
 );
+
+export const deleteContact = createAsyncThunk<void, string, {dispatch: AppDispatch}> (
+  'contacts/deleteContact',
+  async (id, thunkAPI)=> {
+    await axiosApi.delete('/contacts/' + id + '.json');
+    thunkAPI.dispatch(fetchContacts());
+  }
+)

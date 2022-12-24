@@ -2,11 +2,16 @@ import React from 'react';
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {selectOneContact, selectShowModal, closeModal} from "../../store/contactSlice";
 import Backdrop from "../Backdrop/Backdrop";
+import {deleteContact} from "../../store/contactsThunks";
 
 const Modal = () => {
   const oneContact = useAppSelector(selectOneContact);
   const showModal = useAppSelector(selectShowModal);
   const dispatch = useAppDispatch();
+
+  const onDeleteContact = async (id: string) => {
+    await dispatch(deleteContact(id));
+  };
 
   return (
     <>
@@ -32,7 +37,7 @@ const Modal = () => {
             </div>
             <div className='d-flex modal-footer'>
               <button className='btn btn-info'>edit</button>
-              <button className='btn btn-danger'>delete</button>
+              <button className='btn btn-danger' onClick={() => onDeleteContact(oneContact.id)}>delete</button>
             </div>
           </div>
         </div>
