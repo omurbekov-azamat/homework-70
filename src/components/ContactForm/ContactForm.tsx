@@ -7,19 +7,24 @@ import {SendContact} from "../../types";
 
 interface Props {
   onSubmit: (contact: SendContact) => void;
+  existingContact?: SendContact;
+  isEdit?: boolean;
 }
 
-const ContactForm: React.FC<Props> = ({onSubmit}) => {
+const initialState: SendContact = {
+  name: '',
+  phone: '',
+  email: '',
+  photo: '',
+}
+
+export const imageUrl = 'https://thumbs.dreamstime.com/b/no-user-profile-picture-24185395.jpg';
+
+const ContactForm: React.FC<Props> = ({onSubmit, existingContact = initialState, isEdit}) => {
   const loading = useAppSelector(selectSendLoading);
   const navigate = useNavigate();
-  const imageUrl = 'https://thumbs.dreamstime.com/b/no-user-profile-picture-24185395.jpg';
 
-  const [contact, setContact] = useState<SendContact>({
-    name: '',
-    phone: '',
-    email: '',
-    photo: '',
-  });
+  const [contact, setContact] = useState<SendContact>(existingContact);
 
   const userPhoto = contact.photo || imageUrl;
 
@@ -30,7 +35,16 @@ const ContactForm: React.FC<Props> = ({onSubmit}) => {
 
   const onFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(contact);
+
+    if (contact.photo.length === 0) {
+      onSubmit({
+        ...contact,
+        photo: userPhoto,
+      });
+    } else {
+      onSubmit(contact);
+    }
+
     setContact({
       name: '',
       phone: '',
@@ -42,8 +56,8 @@ const ContactForm: React.FC<Props> = ({onSubmit}) => {
   return (
     <div className='container' style={{width: '800px'}}>
       <form onSubmit={onFormSubmit}>
-        <div className='border border-light p-5'>
-          <h4 className='mb-3 text-center'>Add new contact</h4>
+        <div className='p-5'>
+          <h4 className='mb-3 text-center'>{isEdit ? 'Edit contact' : 'Add new contact'}</h4>
           <div className='mb-4'>
             <label htmlFor="name" className='mb-2'>Name</label>
             <input
@@ -103,7 +117,7 @@ const ContactForm: React.FC<Props> = ({onSubmit}) => {
               disabled={loading}
             >
               {loading && <ButtonSpinner/>}
-              Save
+              {isEdit ? 'Update' : 'Save'}
             </button>
             <button
               className='btn btn-success'

@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {RootState} from "../app/store";
-import {createContact, deleteContact, fetchContacts} from "./contactsThunks";
+import {createContact, deleteContact, fetchContacts, updateContact} from "./contactsThunks";
 import {ContactsFromApi} from "../types";
 
 interface ContactsState {
@@ -66,6 +66,15 @@ const contactSlice = createSlice({
     builder.addCase(deleteContact.rejected, state => {
       state.showModal = true;
     });
+    builder.addCase(updateContact.pending, (state) => {
+      state.sendLoading = true;
+    });
+    builder.addCase(updateContact.fulfilled, (state) => {
+      state.sendLoading = false;
+    });
+    builder.addCase(updateContact.rejected, (state) => {
+      state.sendLoading = false;
+    })
   },
 });
 

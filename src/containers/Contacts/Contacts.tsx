@@ -17,17 +17,19 @@ const Contacts = () => {
     if (location.pathname === '/') {
       dispatch(fetchContacts());
     }
-  }, [dispatch, location])
+  }, [dispatch, location]);
 
   return (
-    <div className='container' style={{width: '800px'}}>
-      {fetchLoading ? <Spinner/> : contacts.map((item) => (
-        <ContactItem
-          key={item.id}
-          item={item}
-        />
-      ))}
-      <Modal/>
+    <div className='pt-2 bg-warning bg-opacity-25'>
+      <div className='container' style={{width: '800px'}}>
+        {fetchLoading ? <Spinner/> : contacts.map((item) => (
+          <ContactItem
+            key={item.id}
+            item={item}
+          />
+        ))}
+        <Modal/>
+      </div>
     </div>
   );
 };

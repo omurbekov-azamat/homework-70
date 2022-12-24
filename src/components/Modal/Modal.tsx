@@ -3,6 +3,7 @@ import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {selectOneContact, selectShowModal, closeModal} from "../../store/contactSlice";
 import Backdrop from "../Backdrop/Backdrop";
 import {deleteContact} from "../../store/contactsThunks";
+import {Link} from "react-router-dom";
 
 const Modal = () => {
   const oneContact = useAppSelector(selectOneContact);
@@ -13,6 +14,10 @@ const Modal = () => {
     await dispatch(deleteContact(id));
   };
 
+  const coverModal = () => {
+    dispatch(closeModal());
+  };
+
   return (
     <>
       <Backdrop show={showModal}/>
@@ -20,7 +25,7 @@ const Modal = () => {
         <div className='modal-dialog' onClick={e => e.stopPropagation()}>
           <div className='modal-content'>
             <div className='modal-header d-flex'>
-              <button className='ms-auto btn btn-primary' onClick={() => dispatch(closeModal())}>close</button>
+              <button className='ms-auto btn btn-primary' onClick={coverModal}>close</button>
             </div>
             <div className='d-flex p-2 align-items-center'>
               <img
@@ -36,7 +41,7 @@ const Modal = () => {
               </div>
             </div>
             <div className='d-flex modal-footer'>
-              <button className='btn btn-info'>edit</button>
+              <Link to={'/edit-contact/' + oneContact.id} onClick={coverModal} className='btn btn-info'>Edit</Link>
               <button className='btn btn-danger' onClick={() => onDeleteContact(oneContact.id)}>delete</button>
             </div>
           </div>

@@ -12,7 +12,7 @@ const NewContact = () => {
   };
 
   return (
-    <div>
+    <div className='bg-primary bg-opacity-25'>
       <ContactForm onSubmit={onSubmit}/>
     </div>
   );
