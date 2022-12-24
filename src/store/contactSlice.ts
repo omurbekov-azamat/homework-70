@@ -17,7 +17,7 @@ const initialState: ContactsState = {
   fetchLoading: false,
   item: {
     name: '',
-    phone: '',
+    phone: 0,
     email: '',
     photo: '',
     id: '',
@@ -74,7 +74,7 @@ const contactSlice = createSlice({
     });
     builder.addCase(updateContact.rejected, (state) => {
       state.sendLoading = false;
-    })
+    });
   },
 });
 

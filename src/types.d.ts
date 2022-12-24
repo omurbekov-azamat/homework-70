@@ -1,6 +1,6 @@
 export interface SendContact {
   name: string;
-  phone: string;
+  phone: number;
   email: string;
   photo: string;
 }
@@ -11,4 +11,11 @@ export interface ApiContactList {
 
 export interface ContactsFromApi extends SendContact {
   id: string;
+}
+
+export interface ContactMutation {
+  name: string;
+  phone: string;
+  email: string;
+  photo: string;
 }

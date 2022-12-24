@@ -3,28 +3,28 @@ import {useNavigate} from "react-router-dom";
 import {useAppSelector} from "../../app/hooks";
 import {selectSendLoading} from "../../store/contactSlice";
 import ButtonSpinner from "../Spinner/ButtonSpiner";
-import {SendContact} from "../../types";
+import {ContactMutation, SendContact} from "../../types";
 
 interface Props {
   onSubmit: (contact: SendContact) => void;
-  existingContact?: SendContact;
+  existingContact?: ContactMutation;
   isEdit?: boolean;
 }
 
-const initialState: SendContact = {
+const initialState: ContactMutation = {
   name: '',
   phone: '',
   email: '',
   photo: '',
 }
 
-export const imageUrl = 'https://thumbs.dreamstime.com/b/no-user-profile-picture-24185395.jpg';
+const imageUrl = 'https://thumbs.dreamstime.com/b/no-user-profile-picture-24185395.jpg';
 
 const ContactForm: React.FC<Props> = ({onSubmit, existingContact = initialState, isEdit}) => {
-  const loading = useAppSelector(selectSendLoading);
   const navigate = useNavigate();
+  const loading = useAppSelector(selectSendLoading);
 
-  const [contact, setContact] = useState<SendContact>(existingContact);
+  const [contact, setContact] = useState<ContactMutation>(existingContact);
 
   const userPhoto = contact.photo || imageUrl;
 
@@ -39,10 +39,14 @@ const ContactForm: React.FC<Props> = ({onSubmit, existingContact = initialState,
     if (contact.photo.length === 0) {
       onSubmit({
         ...contact,
+        phone: parseFloat(contact.phone),
         photo: userPhoto,
       });
     } else {
-      onSubmit(contact);
+      onSubmit({
+        ...contact,
+        phone: parseFloat(contact.phone),
+      });
     }
 
     setContact({

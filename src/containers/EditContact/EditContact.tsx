@@ -2,16 +2,16 @@ import React from 'react';
 import ContactForm from "../../components/ContactForm/ContactForm";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {selectOneContact} from "../../store/contactSlice";
-import {SendContact} from "../../types";
+import {ContactMutation, SendContact} from "../../types";
 import {updateContact} from "../../store/contactsThunks";
 
 const EditContact = () => {
   const oneContact = useAppSelector(selectOneContact);
   const dispatch = useAppDispatch();
 
-  let editPerson:SendContact = {
+  let editPerson:ContactMutation = {
     name: oneContact.name,
-    phone: oneContact.phone,
+    phone: oneContact.phone.toString(),
     email: oneContact.email,
     photo: oneContact.photo,
   };

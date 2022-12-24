@@ -51,4 +51,4 @@ export const updateContact = createAsyncThunk<void, UpdateContactParams>(
   async (params) => {
     await axiosApi.put('/contacts/' + params.id + '.json', params.contact);
   }
-)
+);
