@@ -41,6 +41,21 @@ export const deleteContact = createAsyncThunk<void, string, {dispatch: AppDispat
   }
 );
 
+export const fetchContact = createAsyncThunk<ContactsFromApi, string>(
+  'contacts/fetchOne',
+  async (id) => {
+    const response = await  axiosApi.get<ContactsFromApi | null>('/contacts/' + id + '.json');
+    const contact = response.data;
+
+    if (contact === null) {
+      throw new Error('Not found!');
+    }
+
+    return contact;
+  }
+)
+
+
 interface UpdateContactParams {
   id: string;
   contact: SendContact;

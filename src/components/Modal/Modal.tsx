@@ -1,14 +1,22 @@
 import React from 'react';
+import {useNavigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {selectOneContact, selectShowModal, closeModal} from "../../store/contactSlice";
-import Backdrop from "../Backdrop/Backdrop";
 import {deleteContact} from "../../store/contactsThunks";
-import {Link} from "react-router-dom";
+import {
+  selectShowModal,
+  closeModal,
+  selectGetOneContact,
+  selectDeleteOneContactLoading
+} from "../../store/contactSlice";
+import Backdrop from "../Backdrop/Backdrop";
+import ButtonSpinner from "../Spinner/ButtonSpiner";
 
 const Modal = () => {
-  const oneContact = useAppSelector(selectOneContact);
-  const showModal = useAppSelector(selectShowModal);
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const oneContact = useAppSelector(selectGetOneContact)!;
+  const showModal = useAppSelector(selectShowModal);
+  const deleteLoading = useAppSelector(selectDeleteOneContactLoading);
 
   const onDeleteContact = async (id: string) => {
     await dispatch(deleteContact(id));
@@ -41,8 +49,25 @@ const Modal = () => {
               </div>
             </div>
             <div className='d-flex modal-footer'>
-              <Link to={'/edit-contact/' + oneContact.id} onClick={coverModal} className='btn btn-info'>Edit</Link>
-              <button className='btn btn-danger' onClick={() => onDeleteContact(oneContact.id)}>delete</button>
+              <button
+                className='btn btn-info'
+                onClick={() => {
+                  navigate('/edit-contact/' + oneContact.id)
+                  coverModal();
+                }}
+                disabled={deleteLoading}
+              >
+                {deleteLoading && <ButtonSpinner/>}
+                Edit
+              </button>
+              <button
+                className='btn btn-danger'
+                onClick={() => onDeleteContact(oneContact.id)}
+                disabled={deleteLoading}
+              >
+                {deleteLoading && <ButtonSpinner/>}
+                delete
+              </button>
             </div>
           </div>
         </div>
